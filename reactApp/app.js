@@ -32,7 +32,7 @@ class TodoList extends Component {
     render() { 
         return ( 
             <ul>
-                {dummyData.map((task) => (
+                {this.props.todos.map((task) => (
                     <ToDo key={task.taskText} task={task} />
                 ))}
             </ul>
@@ -58,16 +58,19 @@ class InputLine extends Component {
 class TodoApp extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = { todos : [] }
+    }
+
+    componentDidMount() {
+        this.setState({todos : dummyData})
     }
     render() { 
         return ( 
             <div>
                 <InputLine />
-                <TodoList />
+                <TodoList todos={this.state.todos}/>
             </div>
 
-            //return (
         );
     }
 }
