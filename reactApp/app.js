@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import './style.css';
 
-const dummyData= ['finish todo App', 'finish Double Messeger', 'Eat']
+const dummyData= [{taskText: 'finish todo App', completed: false}, 
+    {taskText: 'finish Double Messeger', completed: true}, 
+    {taskText: 'Eat', completed: false}]
 
 
 class ToDo extends Component {
@@ -11,12 +13,12 @@ class ToDo extends Component {
         super(props)
         this.state = {  }
     }
-    
-
     render() { 
         return (
-           
-            <li>{this.props.task}<button className='delete-btn' value='Delete'>x</button></li>
+            <li>
+                {this.props.task.completed === false ? this.props.task.taskText : <strike>{this.props.task.taskText}</strike>}
+                <button className='delete-btn' value='Delete'>x</button>
+            </li>
         );
     }
 }
@@ -31,32 +33,44 @@ class TodoList extends Component {
         return ( 
             <ul>
                 {dummyData.map((task) => (
-                    <ToDo key={task} task={task} />
+                    <ToDo key={task.taskText} task={task} />
                 ))}
             </ul>
         );
     }
 }
 
-// class InputLine extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {  }
-//     }
-//     render() { 
-//         return (  );
-//     }
-// }
+class InputLine extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {  }
+    }
+    render() { 
+        return ( 
+            <div className="todo-form">
+                <input type="text" className="todo-input" name="add-todo" value="write-todo" placeholder="task"/>
+                <input type="submit" className="todo-submit" name="submit-todo" value="add-todo"/>
+            </div>
+         );
+    }
+}
 
-// class TodoApp extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {  }
-//     }
-//     render() { 
-//         return (  );
-//     }
-// }
+class TodoApp extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {  }
+    }
+    render() { 
+        return ( 
+            <div>
+                <InputLine />
+                <TodoList />
+            </div>
+
+            //return (
+        );
+    }
+}
  
 // export default TodoApp;
  
@@ -65,4 +79,4 @@ class TodoList extends Component {
 // export default TodoList;
  
 // export default ToDo;
-ReactDOM.render(<TodoList />, document.getElementById('root'));
+ReactDOM.render(<TodoApp />, document.getElementById('root'));
