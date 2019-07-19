@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 module.exports = {
-    entry: './reactApp/app.js',
+    entry: ['./reactApp/app.js', './reactApp/style.css'],
     output: {
         path: __dirname + '/build',
         filename: 'app.bundle.js'
@@ -16,7 +16,8 @@ module.exports = {
                         presets: ['@babel/preset-env', '@babel/preset-react']
                     }
                 }
-            }
+            },
+            { test: /\.css$/, use: ['style-loader', 'css-loader'] }
         ]
     },
     stats: {
