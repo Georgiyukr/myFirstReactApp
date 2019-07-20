@@ -8,12 +8,14 @@ class ToDo extends Component {
     }
     render() { 
         return (
-            <li>
+            <li className="task">
                 {this.props.task.completed === false ? this.props.task.taskText : <strike>{this.props.task.taskText}</strike>}
-                <button className='delete-btn' value='Delete'>x</button>
+                <button onClick={() => this.props.toggleClick()} className='toggle-btn' value='Toggle'>Completed</button>
+                <button onClick={() => this.props.xClick()} className='delete-btn' value='Delete'>X</button>
             </li>
         );
     }
 }
 
 export default ToDo;
+

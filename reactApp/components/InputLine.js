@@ -5,13 +5,27 @@ import '../style.css';
 class InputLine extends Component {
     constructor(props) {
         super(props);
-        // this.state = {  }
+        this.state = { typedText : '' }
     }
+
+    handleTyping(event) {
+        this.setState({typedText: event.target.value})
+    }
+
+    handleSubmit() {
+        this.props.submit(this.state.typedText);
+        this.setState({typedText: ''})
+    }
+
     render() { 
         return ( 
             <div className="todo-form">
-                <input type="text" className="todo-input" name="add-todo" value="write-todo" placeholder="task"/>
-                <input onClick={() => this.props.submit("Test Task")} type="submit" className="todo-submit" name="submit-todo" value="add-todo"/>
+                <input onChange={(event) => this.handleTyping(event)} 
+                    type="text" className="todo-input" name="add-todo" value={this.state.typedText} 
+                    placeholder=" What is your task?"/>
+                <input onClick={() => this.handleSubmit()} type="submit" 
+                    className="todo-submit" name="submit-todo" 
+                    value="add-todo"/>
             </div>
          );
     }
