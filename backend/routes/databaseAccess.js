@@ -6,7 +6,7 @@ router.post('/add', (req, res) => {
 
     console.log("This is the response", req.body);
     const testTodo = new TodoItem({
-        task: req.body.taskText
+        task: req.body.task
     });
     
     testTodo.save()

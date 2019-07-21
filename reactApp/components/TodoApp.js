@@ -5,54 +5,65 @@ import '../style.css';
 import axios from 'axios'
 const dbUrl = "http://localhost:3000/db";
 
-const dummyData= [{taskText: 'finish todo App', completed: false}, 
-    {taskText: 'finish Double Messeger', completed: true}, 
-    {taskText: 'Eat', completed: false}]
-
-
 class TodoApp extends Component {
     constructor(props) {
         super(props);
         this.state = { todos : [] }
     }
 
-    toggleTodo(index) {
-        dummyData[index].completed === false ? true : false;
-
-        if (dummyData[index].completed) {
-            dummyData[index].completed = false;
-        } else {
-            dummyData[index].completed = true;
-        }
-        console.log('I am in toggle');
-        this.setState({todos: dummyData});
-    }
-
-    addTodo(task) {
-
-        axios.post(dbUrl + '/add', {taskText: task, completed: false})
+    toggleTodo(id) {
+        
+        axios.post(dbUrl + '/toggle', {_id: id})
         .then(function (response) {
-            this.setState({ todos: this.state.todos.concat(response.data)});
-        })
+            let newTodos = this.state.todos.slice();
+            for (let i in newTodos) {
+                let task = newTodos[i];
+                if (task._id === id) {
+                    if (task.completed) {
+                        console.log('TOGGLED in IF TRUE');
+                        newTodos[i].completed = false;
+                    } else {
+                        console.log('TOGGLED in IF FALSE');
+                        newTodos[i].completed = true;
+                    }
+                    //newTodos[i] = response.data;
+                }
+            }
+            console.log('TOGGLED');
+            this.setState({todos: newTodos});
+        }.bind(this))
         .catch(function (error) {
           console.log(error);
         });
+    }
 
-        // dummyData.push({taskText: task, completed: false});
-        // console.log(dummyData);
-        // this.setState({todos: dummyData});
+    addTodo(task) {
+        axios.post(dbUrl + '/add', {task: task, completed: false})
+        .then(function (response) {
+            this.setState({ todos: this.state.todos.concat(response.data)});
+        }.bind(this))
+        .catch(function (error) {
+          console.log(error);
+        });
     };
 
-    removeTodo(index) {
-        dummyData.splice(index, 1);
-        console.log(dummyData);
-        this.setState({todos: dummyData});
+    removeTodo(id) {
+        axios.post(dbUrl + '/remove', {_id, id}).then(function (response) {
+            let newTodos = [];
+            for (let i in newTodos) {
+                let task = newTodos[i];
+                if (task._id !== id) {
+                    newTodos.push(task)
+                }
+            }
+            this.setState({todos:newTodos});
+        }.bind(this));
     }
 
     componentDidMount() {
-        this.setState({todos : dummyData});
-        console.log(dummyData);
-        this.setState({todos: dummyData});
+        axios.get(dbUrl + '/all').then(function (response) {
+            this.setState({todos: response.data});
+        }.bind(this))
     }
     render() { 
         return ( 
