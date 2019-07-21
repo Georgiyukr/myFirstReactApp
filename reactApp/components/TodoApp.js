@@ -2,6 +2,8 @@ import InputLine from './InputLine'
 import TodoList from './TodoList'
 import React, { Component } from 'react';
 import '../style.css';
+import axios from 'axios'
+const dbUrl = "http://localhost:3000/db";
 
 const dummyData= [{taskText: 'finish todo App', completed: false}, 
     {taskText: 'finish Double Messeger', completed: true}, 
@@ -27,9 +29,18 @@ class TodoApp extends Component {
     }
 
     addTodo(task) {
-        dummyData.push({taskText: task, completed: false});
-        console.log(dummyData);
-        this.setState({todos: dummyData});
+
+        axios.post(dbUrl + '/add', {taskText: task, completed: false})
+        .then(function (response) {
+            this.setState({ todos: this.state.todos.concat(response.data)});
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+        // dummyData.push({taskText: task, completed: false});
+        // console.log(dummyData);
+        // this.setState({todos: dummyData});
     };
 
     removeTodo(index) {
