@@ -48,15 +48,15 @@ class TodoApp extends Component {
     };
 
     removeTodo(id) {
-        axios.post(dbUrl + '/remove', {_id, id}).then(function (response) {
+        axios.post(dbUrl + '/remove', {_id: id}).then(function (response) {
             let newTodos = [];
-            for (let i in newTodos) {
-                let task = newTodos[i];
+            for (let i in this.state.todos) {
+                let task = this.state.todos[i];
                 if (task._id !== id) {
                     newTodos.push(task)
                 }
             }
-            this.setState({todos:newTodos});
+            this.setState({todos: newTodos});
         }.bind(this));
     }
 
